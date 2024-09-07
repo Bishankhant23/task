@@ -4,14 +4,28 @@ export default function useFetchApi() {
     const [data,setData] = useState([])
     const [error,setError] = useState(false)
     const [isLoading,setIsloading] = useState(false)
-    const fetchapi = (url,data = [],headers=[],methods="get") => {
+    const fetchapi = (url,data = [],headers=[],method="get") => {
         setIsloading(true)
-        fetch(url).
-            then((d) => d.json()).
-            then((data) => {
-                setIsloading(false)
-                setData(data)
-            })
+        if(method == "get"){
+          fetch(url).
+          then((d) => d.json()).
+          then((data) => {
+              setIsloading(false)
+              setData(data)
+          })
+        }else{
+          fetch(url,{
+            method,
+            body:JSON.stringify(data),
+            headers:headers
+          }).
+          then((d) => d.json()).
+          then((data) => {
+              setIsloading(false)
+              setData(data)
+          })
+        }
+        
     }
 
   return {
